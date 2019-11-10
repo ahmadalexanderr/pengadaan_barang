@@ -24,9 +24,22 @@ class User_model extends CI_Model{
         return $query;
     }
 
+    public function get_profile($id){
+        $username = $this->session->userdata('username');
+        $this->db->where('username', $username);
+        $query = $this->db->get('login_session');
+        return $query->row();
+    }
+
     public function delete_user($id){
         $this->db->where('id', $id);
         $this->db->delete('login_session');
+    }
+    
+    public function check_old_password(){
+         $username = $this->session->userdata('username');
+         $query = $this->db->query("SELECT password FROM login_session WHERE username = '$username' ");
+         return $query;
     }
 }
 ?>

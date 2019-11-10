@@ -58,7 +58,7 @@
   </div> 
   <div class="form-group col-md">
     <center>
-    <button type="submit" id="edit" class="btn btn-primary" value="Insert">Submit</button>
+    <button type="submit" id="edit" class="btn btn-primary" value="Insert">Konfirmasi</button>
     </center>
    </div>
 </form>

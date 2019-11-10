@@ -2,10 +2,10 @@
   <div class="card-header">
   <?php if ($this->session->userdata('level') == 'admin'){ ?>
   <a href="<?php echo base_url('admin/permintaanJenis') ?>">Daftar Kategori</a>
-  ACC Kategori
+  Tampilan Kategori
   <?php } else { ?>
   <a href="<?php echo base_url('subag/daftarKategori') ?>">Daftar Kategori</a>
-  Kategori yang saya ajukan
+  Tampilan Kategori
   <?php } ?>
   <?php if ($this->session->userdata('level')==='admin') { ?>
    <a id="pengajuanKat" href="<?php echo base_url('admin/permintaanJenis'); ?>" data-toggle="modal" data-target="#ModalKat"><i class="fas fa-puzzle-piece"></i></a>
@@ -22,9 +22,7 @@
       <th scope="col">Kategori</th>
       <th scope="col">Waktu Pengajuan</th>
       <th scope="col">Status</th>
-      <?php if ($this->session->userdata('level') == 'admin'){ ?>
       <th scope="col">Aksi</th>
-      <?php } ?>
     </tr>
   </thead>
   <tbody>
@@ -35,11 +33,17 @@
       <td><?php echo $jb['nama_jenis_barang']; ?></td>
       <td><?php echo $jb['date_jenis_barang']; ?></td>
       <td><?php echo $jb['izin_jenis_barang']; ?></td>
-      <?php if ($this->session->userdata('level') != 'subag') { ?> 
-      <td><a href="<?php echo site_url('admin/editJenis/'.$jb['id_jenis_barang']);?>">Edit</a>
-      <a href="<?php echo site_url('admin/hapusJenis/'.$jb['id_jenis_barang']);?>">Hapus</a>
-      <?php } ?>
-      </td>
+        <?php if ($jb['izin_jenis_barang'] == 'pending') {?>
+            <?php if ($this->session->userdata('level') == 'admin') { ?>
+        <td><a href="<?php echo site_url('admin/editJenis/'.$jb['id_jenis_barang']);?>">Tampilkan Kategori</a></td>
+            <?php } else { ?>
+              <td><a href="<?php echo site_url('subag/editJenis/'.$jb['id_jenis_barang']);?>">Tampilkan Kategori</a></td> 
+            <?php } ?>
+        <?php } else { ?>
+        <td><center><div class="alert alert-primary" role="alert">
+          Ditampilkan
+        </div></center></td>
+        <?php } ?>
     </tr>
     <?php $i++; ?>
   <?php } ?>

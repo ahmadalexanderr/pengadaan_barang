@@ -3,7 +3,8 @@ class Jenis_model extends CI_Model{
     
     public function insert_jenis($nama_jenis_barang, $izin_jenis_barang)
     {
-        $query = $this->db->query("INSERT INTO jenis_barang(nama_jenis_barang, izin_jenis_barang) VALUES ('$nama_jenis_barang', '$izin_jenis_barang')");
+        //$query = $this->db->query("INSERT INTO jenis_barang(nama_jenis_barang, izin_jenis_barang) VALUES ('$nama_jenis_barang', '$izin_jenis_barang')");
+        $query = $this->db->insert('jenis_barang', array('nama_jenis_barang'=>$nama_jenis_barang, 'izin_jenis_barang'=>$izin_jenis_barang));
         return $query;
     }
 

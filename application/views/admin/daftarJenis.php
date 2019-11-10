@@ -2,9 +2,9 @@
   <div class="card-header">
   Daftar Kategori
   <?php if ($this->session->userdata('level') == 'admin') { ?>
-  <a href="<?php echo base_url('admin/accJenis'); ?>">ACC Kategori</a>
+  <a href="<?php echo base_url('admin/accJenis'); ?>">Tampilan Kategori</a>
   <?php } else { ?>
-  <a href="<?php echo base_url('subag/pengajuanKategori'); ?>">Kategori yang saya ajukan</a>
+  <a href="<?php echo base_url('subag/pengajuanKategori'); ?>">Tampilan Kategori</a>
   <?php } ?>
   <?php if ($this->session->userdata('level')==='admin') { ?>
    <a id="pengajuanKat" href="<?php echo base_url('admin/permintaanJenis'); ?>" data-toggle="modal" data-target="#ModalKat"><i class="fas fa-puzzle-piece"></i></a>
@@ -21,7 +21,10 @@
       <th scope="col">Kategori</th>
       <th scope="col">Waktu Pengajuan</th>
       <th scope="col">Status</th>
-      <th scope="col">Jumlah Pengajuan Ter-ACC</th>
+      <th scope="col">Jumlah Barang Ter-ACC</th>
+      <?php if ($this->session->userdata('level') == 'admin') { ?>
+      <th scope="col">Aksi</th>
+      <?php } ?>
     </tr>
   </thead>
   <tbody>
@@ -33,6 +36,9 @@
       <td><?php echo $jb['date_jenis_barang']; ?></td>
       <td><?php echo $jb['izin_jenis_barang']; ?></td>
       <td><?php echo $jb['total']; ?></td>
+      <?php if ($this->session->userdata('level') == 'admin') { ?>
+      <td><a href="<?php echo site_url('admin/hapusJenis/'.$jb['id_jenis_barang']);?>">Hapus</a></td>
+      <?php } ?>
     </tr>
     <?php $i++; ?>
   <?php } ?>

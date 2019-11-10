@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Aug 14, 2019 at 07:42 AM
+-- Generation Time: Sep 05, 2019 at 07:40 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.3.7
 
@@ -36,7 +36,8 @@ INSERT INTO `jenis_barang` (`id_jenis_barang`, `nama_jenis_barang`, `izin_jenis_
 (130, 'Makanan', 'accepted', '2019-08-13 18:45:00'),
 (131, 'Lain-lain', 'accepted', '2019-08-13 19:04:30'),
 (132, 'Album musik', 'accepted', '2019-08-13 19:04:35'),
-(133, 'Kendaraan', 'accepted', '2019-08-13 23:17:26');
+(133, 'Kendaraan', 'accepted', '2019-08-13 23:17:26'),
+(134, 'Alat Musik', 'accepted', '2019-08-28 00:23:53');
 
 -- --------------------------------------------------------
 
@@ -58,8 +59,9 @@ CREATE TABLE `login_session` (
 INSERT INTO `login_session` (`id`, `username`, `password`, `level`) VALUES
 (1, 'admin', '72545f3f86fad045a26ed54abd2bbb9f', 'admin'),
 (2, 'subag', '143ad2695caf8f2368b5d9ef03d37ee8', 'subag'),
-(5, 'ahmadalexander', '534b44a19bf18d20b71ecc4eb77c572f', 'user'),
-(6, 'Huda', '0075a4e7a2e71083262da135ecdbdd14', 'user');
+(5, 'ahmadalexander', '534b44a19bf18d20b71ecc4eb77c572f', 'admin'),
+(6, 'Huda', '0075a4e7a2e71083262da135ecdbdd14', 'user'),
+(7, 'hilman', 'cf081b11e184de45ecce347f758936f9', 'user');
 
 -- --------------------------------------------------------
 
@@ -266,13 +268,13 @@ ALTER TABLE `user_sub_menu`
 -- AUTO_INCREMENT for table `jenis_barang`
 --
 ALTER TABLE `jenis_barang`
-  MODIFY `id_jenis_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
+  MODIFY `id_jenis_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
 
 --
 -- AUTO_INCREMENT for table `login_session`
 --
 ALTER TABLE `login_session`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `status_submisi`

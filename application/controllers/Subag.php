@@ -34,19 +34,22 @@ class Subag extends CI_Controller {
             $this->load->view('user/profile', $data);
             $this->load->view('templates/footer');
         } else {
+                $old_password = $this->User_model->check_old_password()->row_array()['password'];
                 $current_password = $this->input->post('current_password');
                 $new_password = $this->input->post('new_password1');
-               if ($current_password == $new_password) {
+                if (md5($current_password) != $old_password){
+                   $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">Silahkan ulangi password lama anda</div>');
+                    redirect('subag/profile'); 
+                }
+                elseif ($current_password == $new_password) {
                     $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">Password baru tidak bisa sama dengan yang lama</div>');
-                    redirect('admin/profile');
+                    redirect('subag/profile');
                 } else {
                     // password sudah ok
-                    $password_hash = MD5($new_password);
-
+                    $password_hash = md5($new_password);
                     $this->db->set('password', $password_hash);
                     $this->db->where('username', $this->session->userdata('username'));
                     $this->db->update('login_session');
-
                     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Password berhasil diubah</div>');
                     redirect('subag/profile');
                 }
@@ -66,7 +69,7 @@ class Subag extends CI_Controller {
     }
 
     public function permintaanBarang(){
-        $data['title'] = 'Permintaan Barang';
+        $data['title'] = 'Daftar Barang';
         $data['submit_barang'] = $this->Barang_model->getSubmit();
         $data['status_submisi']= enums('submisi_barang', 'status_submisi');
         $this->load->view('templates/header', $data);
@@ -78,10 +81,10 @@ class Subag extends CI_Controller {
     }
     
     public function tambahJenisBarang(){
-        $data['title'] = 'Pengajuan Kategori';
+        $data['title'] = 'Daftar Kategori';
         $data['izin_jenis_barang']= enums('jenis_barang', 'izin_jenis_barang');
         $this->load->view('login/logout_modal', $data);
-        $this->form_validation->set_rules('nama_jenis_barang', 'Nama Jenis Barang', 'trim|required|is_unique[jenis_barang.nama_jenis_barang]');
+        $this->form_validation->set_rules('nama_jenis_barang', 'Nama Jenis Barang', 'trim|required|alpha_dash');
         if($this->form_validation->run()==false)
         {
             $this->load->view('templates/header', $data);
@@ -103,7 +106,7 @@ class Subag extends CI_Controller {
         $data['jenis_barang'] = $this->Jenis_model->hitung_perKategori1();
         //$data['jenis_barang'] = $this->Jenis_model->get_jenis();
         $this->load->view('login/logout_modal', $data);
-        $this->form_validation->set_rules('nama_jenis_barang', 'Nama Jenis Barang', 'trim|required|is_unique[jenis_barang.nama_jenis_barang]');
+         $this->form_validation->set_rules('nama_jenis_barang', 'Nama Jenis Barang', 'trim|required|is_unique[jenis_barang.nama_jenis_barang]');
         if($this->form_validation->run()==false){
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
@@ -134,13 +137,41 @@ class Subag extends CI_Controller {
         } else {
              $this->insertJenis();
         } 
-    }    
+    }   
+    
+    public function editJenis($id_jenis_barang){
+        $data['title'] = "Daftar Kategori";
+        $data['record'] = $this->Jenis_model->get_satu_jenis($id_jenis_barang)->row_array();
+        $data['izin_jenis_barang']= enums('jenis_barang', 'izin_jenis_barang');
+        $data['jenis_barang'] = $this->Jenis_model->get_approved_jenis()->result_array();
+        $this->load->view('login/logout_modal', $data);
+        $this->form_validation->set_rules('nama_jenis_barang', 'Nama Jenis Barang', 'trim|required');
+        if($this->form_validation->run()==false)
+        {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('subag/tampilkanKategori', $data);
+            $this->load->view('templates/footer');  
+        }
+        else 
+        {   
+            $data = array(
+                'nama_jenis_barang' => $this->input->post('nama_jenis_barang'),
+                'izin_jenis_barang' => $this->input->post('izin_jenis_barang')
+            );
+            $this->db->where('id_jenis_barang', $id_jenis_barang);
+            $this->db->update('jenis_barang', $data);
+            $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Kategori berhasil ditampilkan </div>');
+            redirect('subag/pengajuanKategori'); 
+        }
+    }
 
     private function insertJenis(){
         $nama_jenis_barang = $this->input->post('nama_jenis_barang');
         $izin_jenis_barang = $this->input->post('izin_jenis_barang');
         $this->Jenis_model->insert_jenis($nama_jenis_barang, $izin_jenis_barang);
-        $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Jenis barang berhasil disubmit </div>');
+        $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Kategori barang berhasil diajukan </div>');
         redirect('subag/daftarKategori');
     }
 
@@ -175,7 +206,7 @@ class Subag extends CI_Controller {
             );
             $this->db->where('id', $id);
             $this->db->update('submisi_barang', $data);
-            $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Data berhasil diubah </div>');
+            $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Barang berhasil di-ACC </div>');
             redirect('subag/daftarBarang');
        }    
     }

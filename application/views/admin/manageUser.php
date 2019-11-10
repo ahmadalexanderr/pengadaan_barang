@@ -23,8 +23,16 @@
       <td><?php echo $u['username']; ?></td>
       <td><?php echo $u['password']; ?></td>
       <td><?php echo $u['level']; ?></td>
-      <td><a href="<?php echo base_url('admin/editUser/'.$u['id']); ?>">Edit</a>
+      <td>
+      <?php if ($this->session->userdata('username') != 'admin' && $u['level'] == 'admin'){ ?>
+      <div class="alert alert-warning" role="alert">
+        Wewenang Super Admin
+      </div>
+      <?php } else { ?>
+      <a href="<?php echo base_url('admin/resetUser/'.$u['id']); ?>">Reset</a>
+      <a href="<?php echo base_url('admin/editUser/'.$u['id']); ?>">Edit</a>
       <a href="<?php echo base_url('admin/hapusUser/'.$u['id']); ?>">Hapus</a>
+      <?php } ?>
     </td>
     </tr>
     <?php $i++; ?>
@@ -35,6 +43,6 @@
 </div>
 <style>
 #addUser {
-  float: right;
-i}
+  float: right; 
+}
 </style>

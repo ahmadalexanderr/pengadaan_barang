@@ -35,19 +35,22 @@ class User extends CI_Controller {
             $this->load->view('user/profile', $data);
             $this->load->view('templates/footer');
         } else {
+                $old_password = $this->User_model->check_old_password()->row_array()['password'];
                 $current_password = $this->input->post('current_password');
                 $new_password = $this->input->post('new_password1');
-               if ($current_password == $new_password) {
+                if (md5($current_password) != $old_password){
+                   $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">Silahkan ulangi password lama anda</div>');
+                    redirect('user/profile'); 
+                }
+                elseif ($current_password == $new_password) {
                     $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">Password baru tidak bisa sama dengan yang lama</div>');
-                    redirect('admin/profile');
+                    redirect('user/profile');
                 } else {
                     // password sudah ok
-                    $password_hash = MD5($new_password);
-
+                    $password_hash = md5($new_password);
                     $this->db->set('password', $password_hash);
                     $this->db->where('username', $this->session->userdata('username'));
                     $this->db->update('login_session');
-
                     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Password berhasil diubah</div>');
                     redirect('user/profile');
                 }
@@ -117,7 +120,7 @@ class User extends CI_Controller {
     }
 
         public function konfirmasiBarang($id){
-        $data['title'] = "Konfirmasi Barang";
+        $data['title'] = "Daftar Barang";
         $data['record'] = $this->Barang_model->get_satu_barang($id)->row_array();
         $data['submit_barang'] = $this->Barang_model->get_submit();
         $data['approved_jenis_barang'] = $this->Jenis_model->get_approved_jenis()->result_array();

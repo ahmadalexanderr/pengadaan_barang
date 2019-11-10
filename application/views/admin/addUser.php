@@ -53,7 +53,7 @@
 </div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-            <center><button type="submit" class="btn btn-primary">Submit</button></center>
+            <center><button type="submit" class="btn btn-primary">Tambah User</button></center>
           </form>
         </div>
       </div>

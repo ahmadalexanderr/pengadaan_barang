@@ -22,7 +22,7 @@
       <?php } ?>
     <?php echo $this->session->flashdata('message'); ?>
   <div class="form-group col-md">
-      <label>Jenis</label>
+      <label>Kategori</label>
    <div class="form-group control">
    <select class="form-control" name="id_jenis_barang" id="id_jenis_barang" required>
     <?php foreach($approved_jenis_barang as $row):?>
@@ -62,7 +62,7 @@
   </div> 
   <div class="form-group col-md">
     <center>
-    <button type="submit" id="submit" class="btn btn-primary" value="Insert">Submit</button>
+    <button type="submit" id="submit" class="btn btn-primary" value="Insert">Buat Pengajuan</button>
     </center>
   </div>
 </form>

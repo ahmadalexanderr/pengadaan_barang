@@ -1,7 +1,7 @@
 <div class="card">
   <div class="card-header">
   <!-- Nav Item - Tambah Barang -->
-  Daftar Barang Ter-ACC
+  Daftar ACC Barang
   <?php if ($this->session->userdata('level')!='subag') {
     if ($this->session->userdata('level') == 'admin') { ?>
       <a class="" href="<?php echo base_url('admin/submitBarang');?>" id="submitBarang" role="button" aria-haspopup="true" aria-expanded="false" data-toggle="modal" data-target="#tambahBarang">

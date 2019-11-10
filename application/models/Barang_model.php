@@ -3,19 +3,19 @@ class Barang_model extends CI_Model{
 
     public function get_daftar()
     {
-       $query = $this->db->query("SELECT * FROM submisi_barang LEFT JOIN jenis_barang ON submisi_barang.id_jenis_barang = jenis_barang.id_jenis_barang LEFT JOIN status_submisi ON submisi_barang.id_status_submisi = status_submisi.id_status_submisi LEFT JOIN status_terima ON submisi_barang.id_status_terima = status_terima.id_status_terima WHERE status_submisi.nama_status_submisi != 'pending' ")->result_array();
+       $query = $this->db->query("SELECT * FROM submisi_barang LEFT JOIN jenis_barang ON submisi_barang.id_jenis_barang = jenis_barang.id_jenis_barang LEFT JOIN status_submisi ON submisi_barang.id_status_submisi = status_submisi.id_status_submisi LEFT JOIN status_terima ON submisi_barang.id_status_terima = status_terima.id_status_terima WHERE status_submisi.nama_status_submisi != 'pending' ORDER BY id ASC ")->result_array();
        return $query;
     }
 
    public function get_submit()
     {
-       $query = $this->db->query("SELECT * FROM submisi_barang LEFT JOIN jenis_barang ON submisi_barang.id_jenis_barang = jenis_barang.id_jenis_barang LEFT JOIN status_submisi ON submisi_barang.id_status_submisi = status_submisi.id_status_submisi LEFT JOIN status_terima ON submisi_barang.id_status_terima = status_terima.id_status_terima")->result_array();
+       $query = $this->db->query("SELECT * FROM submisi_barang LEFT JOIN jenis_barang ON submisi_barang.id_jenis_barang = jenis_barang.id_jenis_barang LEFT JOIN status_submisi ON submisi_barang.id_status_submisi = status_submisi.id_status_submisi LEFT JOIN status_terima ON submisi_barang.id_status_terima = status_terima.id_status_terima ORDER BY id ASC")->result_array();
        return $query;
     }
 
     public function get_request(){
        $username = $this->session->userdata('username');
-       $query = $this->db->query("SELECT * FROM submisi_barang LEFT JOIN jenis_barang ON submisi_barang.id_jenis_barang = jenis_barang.id_jenis_barang LEFT JOIN status_submisi ON submisi_barang.id_status_submisi = status_submisi.id_status_submisi LEFT JOIN status_terima ON submisi_barang.id_status_terima = status_terima.id_status_terima WHERE username = '$username'")->result_array();
+       $query = $this->db->query("SELECT * FROM submisi_barang LEFT JOIN jenis_barang ON submisi_barang.id_jenis_barang = jenis_barang.id_jenis_barang LEFT JOIN status_submisi ON submisi_barang.id_status_submisi = status_submisi.id_status_submisi LEFT JOIN status_terima ON submisi_barang.id_status_terima = status_terima.id_status_terima WHERE username = '$username' ORDER BY id ASC")->result_array();
        return $query;
     }
 

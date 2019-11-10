@@ -3,7 +3,7 @@
     Tampilkan Kategori
   </div>
   <div class="card-body">
-    <form method="post" action="<?php echo base_url('admin/editJenis/'.$record['id_jenis_barang']);?>">
+    <form method="post" action="<?php echo base_url('subag/editJenis/'.$record['id_jenis_barang']);?>">
 <div class="form-group col-md">
 <label>Jenis Barang</label>
 <input type="text" class="form-control" id="nama_jenis_barang" name="nama_jenis_barang" value="<?php echo $record['nama_jenis_barang'];?>" readonly>
