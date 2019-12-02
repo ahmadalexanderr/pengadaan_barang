@@ -23,7 +23,7 @@
     <option value="<?php echo $row['id_jenis_barang'];?>" <?php if($record['id_jenis_barang'] == $row['id_jenis_barang']) { echo 'selected';}?>><?php echo $row['nama_jenis_barang'];?></option>
     <?php endforeach;?>
     </select>
-  </div> 
+  </div>
     </div>
   <div class="form-group col-md">
     <label>Barang</label>
@@ -55,7 +55,10 @@
     <option value="<?php echo $row['id_status_terima'];?>" <?php if($record['id_status_terima'] == $row['id_status_terima']) { echo 'selected';}?>><?php echo $row['nama_status_terima'];?></option>
     <?php endforeach;?>
   </select>
-  </div> 
+  </div>
+  <div class="form-group col-md">
+   <textarea rows="5" cols="10" style="width:90%" class="form-control" id="alasan" name="alasan" value="<?php echo $record['id']; ?>" readonly><?php echo $record['alasan']; ?></textarea>
+   </div>
   <div class="form-group col-md">
     <center>
     <button type="submit" id="edit" class="btn btn-primary" value="Insert">Konfirmasi</button>

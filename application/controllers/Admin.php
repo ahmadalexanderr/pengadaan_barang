@@ -19,7 +19,7 @@ class Admin extends CI_Controller {
         $this->load->view('templates/topbar', $data);
         $this->load->view('user/index', $data);
         $this->load->view('login/logout_modal', $data);
-        $this->load->view('templates/footer');  
+        $this->load->view('templates/footer');
     }
 
     public function profile(){
@@ -29,7 +29,7 @@ class Admin extends CI_Controller {
         $this->form_validation->set_rules('new_password1', 'New Password', 'required|trim|min_length[3]|matches[new_password2]');
         $this->form_validation->set_rules('new_password2', 'Confirm New Password', 'required|trim|min_length[3]|matches[new_password1]');
         $this->load->view('login/logout_modal', $data);
-        if($this->form_validation->run()==false){ 
+        if($this->form_validation->run()==false){
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar', $data);
             $this->load->view('templates/topbar', $data);
@@ -41,7 +41,7 @@ class Admin extends CI_Controller {
                 $new_password = $this->input->post('new_password1');
                 if (md5($current_password) != $old_password){
                    $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">Silahkan ulangi password lama anda</div>');
-                    redirect('admin/profile'); 
+                    redirect('admin/profile');
                 }
                 elseif ($current_password == $new_password) {
                     $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">Password baru tidak bisa sama dengan yang lama</div>');
@@ -56,8 +56,8 @@ class Admin extends CI_Controller {
                     redirect('admin/profile');
                 }
             }
-       }    
-    
+       }
+
     public function daftarBarang(){
         $data['title'] = "Daftar Barang";
         $data['approved_jenis_barang'] = $this->Jenis_model->get_approved_jenis()->result_array();
@@ -75,14 +75,14 @@ class Admin extends CI_Controller {
             $this->load->view('templates/topbar', $data);
             $this->load->view('user/daftarBarang', $data);
             $this->load->view('user/buatPermintaan', $data);
-            $this->load->view('templates/footer');  
+            $this->load->view('templates/footer');
         }
-        else 
+        else
         {
             $this->insert();
         }
     }
-  
+
     private function insert()
         {
             $id_jenis_barang   = $this->input->post('id_jenis_barang');
@@ -119,13 +119,14 @@ class Admin extends CI_Controller {
         $this->form_validation->set_rules('nama_barang', 'Barang', 'trim|required');
         $this->form_validation->set_rules('jumlah_barang', 'Jumlah', 'trim|required|numeric');
         $this->form_validation->set_rules('satuan', 'Satuan', 'trim|required|alpha');
+        $this->form_validation->set_rules('alasan', 'alasan', 'trim');
         if($this->form_validation->run()==false){
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar', $data);
             $this->load->view('templates/topbar', $data);
             $this->load->view('user/acc', $data);
             $this->load->view('user/buatPermintaan', $data);
-            $this->load->view('templates/footer'); 
+            $this->load->view('templates/footer');
     } else {
          $data = array(
                 'id_jenis_barang' => $this->input->post('id_jenis_barang'),
@@ -134,13 +135,14 @@ class Admin extends CI_Controller {
                 'satuan' => $this->input->post('satuan'),
                 'id_status_submisi' => $this->input->post('id_status_submisi'),
                 'username' => $this->input->post('username'),
-                'id_status_terima' => $this->input->post('id_status_terima')
+                'id_status_terima' => $this->input->post('id_status_terima'),
+                'alasan' => $this->input->post('alasan')
             );
             $this->db->where('id', $id);
             $this->db->update('submisi_barang', $data);
-            $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Barang berhasil di-ACC </div>');
+            $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Barang berhasil di-ACC</div>');
             redirect('admin/daftarBarang');
-       }    
+       }
     }
 
     public function konfirmasiBarang($id){
@@ -157,12 +159,13 @@ class Admin extends CI_Controller {
         $this->form_validation->set_rules('nama_barang', 'Barang', 'trim|required');
         $this->form_validation->set_rules('jumlah_barang', 'Jumlah', 'trim|required|numeric');
         $this->form_validation->set_rules('satuan', 'Satuan', 'trim|required|alpha');
+        $this->form_validation->set_rules('alasan', 'alasan', 'trim');
         if($this->form_validation->run()==false){
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar', $data);
             $this->load->view('templates/topbar', $data);
             $this->load->view('user/konfirmasi', $data);
-            $this->load->view('templates/footer'); 
+            $this->load->view('templates/footer');
     } else {
          $data = array(
                 'id_jenis_barang' => $this->input->post('id_jenis_barang'),
@@ -171,19 +174,31 @@ class Admin extends CI_Controller {
                 'satuan' => $this->input->post('satuan'),
                 'id_status_submisi' => $this->input->post('id_status_submisi'),
                 'username' => $this->input->post('username'),
-                'id_status_terima' => $this->input->post('id_status_terima')
+                'id_status_terima' => $this->input->post('id_status_terima'),
+                'alasan' => $this->input->post('alasan')
             );
             $this->db->where('id', $id);
             $this->db->update('submisi_barang', $data);
             $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Pengajuan terkonfirmasi </div>');
             redirect('admin/pengajuan');
-       }    
+       }
+    }
+
+    public function alasan_control($id){
+        $data['title'] = 'Pengajuan Saya';
+        $data['record'] = $this->Barang_model->get_satu_barang($id)->row_array();
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('user/alasan_view', $data);
+        $this->load->view('login/logout_modal', $data);
+        $this->load->view('templates/footer');
     }
 
     public function deleteBarang($id){
        $this->Barang_model->delete_barang($id);
        $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Data terhapus </div>');
-       redirect('admin/daftarBarang'); 
+       redirect('admin/daftarBarang');
     }
 
     public function permintaanJenis(){
@@ -205,7 +220,7 @@ class Admin extends CI_Controller {
         $this->load->view('templates/footer');
         } else {
              $this->insertJenis();
-        } 
+        }
     }
 
     public function accJenis(){
@@ -227,14 +242,14 @@ class Admin extends CI_Controller {
         $this->load->view('templates/footer');
         } else {
              $this->insertJenis();
-        } 
+        }
     }
 
     private function insertJenis(){
         $nama_jenis_barang = $this->input->post('nama_jenis_barang');
         $izin_jenis_barang = $this->input->post('izin_jenis_barang');
         $this->Jenis_model->insert_jenis($nama_jenis_barang, $izin_jenis_barang);
-        $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Kategori barang berhasil diajukan </div>');
+        $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Kategori barang berhasil ditambahkan. </div>');
         redirect('admin/accJenis');
     }
 
@@ -251,10 +266,10 @@ class Admin extends CI_Controller {
             $this->load->view('templates/sidebar', $data);
             $this->load->view('templates/topbar', $data);
             $this->load->view('admin/editJenis', $data);
-            $this->load->view('templates/footer');  
+            $this->load->view('templates/footer');
         }
-        else 
-        {   
+        else
+        {
             $data = array(
                 'nama_jenis_barang' => $this->input->post('nama_jenis_barang'),
                 'izin_jenis_barang' => $this->input->post('izin_jenis_barang')
@@ -262,7 +277,7 @@ class Admin extends CI_Controller {
             $this->db->where('id_jenis_barang', $id_jenis_barang);
             $this->db->update('jenis_barang', $data);
             $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Kategori berhasil ditampilkan </div>');
-            redirect('admin/accJenis'); 
+            redirect('admin/accJenis');
         }
     }
 
@@ -270,7 +285,7 @@ class Admin extends CI_Controller {
         //$this->Jenis_model->delete_jenis($id_jenis_barang);
         $this->Jenis_model->delete_jenis_all($id_jenis_barang);
         $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Data terhapus </div>');
-        redirect('admin/permintaanJenis');  
+        redirect('admin/permintaanJenis');
     }
 
     public function userManagement(){
@@ -301,7 +316,7 @@ class Admin extends CI_Controller {
         $level    = $this->input->post('level');
         $this->User_model->insert_user($username, $password, $level);
         $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> User berhasil ditambahkan</div>');
-        redirect('admin/userManagement');    
+        redirect('admin/userManagement');
     }
 
     public function editUser($id){
@@ -318,17 +333,17 @@ class Admin extends CI_Controller {
             $this->load->view('templates/sidebar', $data);
             $this->load->view('templates/topbar', $data);
             $this->load->view('admin/editUser', $data);
-            $this->load->view('templates/footer');  
+            $this->load->view('templates/footer');
         }
-        else 
-        {   
+        else
+        {
             $data = array(
-                'level' => $this->input->post('level'), 
+                'level' => $this->input->post('level'),
             );
             $this->db->where('id', $id);
             $this->db->update('login_session', $data);
             $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Hak akses user berhasil diubah </div>');
-            redirect('admin/userManagement'); 
+            redirect('admin/userManagement');
         }
     }
 
@@ -348,25 +363,25 @@ class Admin extends CI_Controller {
             $this->load->view('templates/sidebar', $data);
             $this->load->view('templates/topbar', $data);
             $this->load->view('admin/reset_user', $data);
-            $this->load->view('templates/footer');  
+            $this->load->view('templates/footer');
         }
-        else 
-        {   
+        else
+        {
             $data = array(
                 'password' => md5($this->input->post('resetpassword1')),
-                'level' => $this->input->post('level') 
+                'level' => $this->input->post('level')
             );
             $this->db->where('id', $id);
             $this->db->update('login_session', $data);
             $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> User berhasil direset </div>');
-            redirect('admin/userManagement'); 
+            redirect('admin/userManagement');
         }
     }
 
     public function hapusUser($id){
        $this->User_model->delete_user($id);
        $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> User terhapus </div>');
-       redirect('admin/userManagement');  
+       redirect('admin/userManagement');
     }
 
     public function pengajuan(){
@@ -381,7 +396,7 @@ class Admin extends CI_Controller {
         $this->load->view('templates/topbar', $data);
         $this->load->view('user/pengajuanSaya', $data);
         $this->load->view('user/buatPermintaan', $data);
-        $this->load->view('templates/footer'); 
+        $this->load->view('templates/footer');
     }
 }
 ?>

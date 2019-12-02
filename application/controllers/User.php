@@ -18,7 +18,7 @@ class User extends CI_Controller {
         $this->load->view('templates/topbar', $data);
         $this->load->view('user/index', $data);
         $this->load->view('login/logout_modal', $data);
-        $this->load->view('templates/footer');  
+        $this->load->view('templates/footer');
     }
 
     public function profile(){
@@ -28,7 +28,7 @@ class User extends CI_Controller {
         $this->form_validation->set_rules('new_password1', 'New Password', 'required|trim|min_length[3]|matches[new_password2]');
         $this->form_validation->set_rules('new_password2', 'Confirm New Password', 'required|trim|min_length[3]|matches[new_password1]');
         $this->load->view('login/logout_modal', $data);
-        if($this->form_validation->run()==false){ 
+        if($this->form_validation->run()==false){
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar', $data);
             $this->load->view('templates/topbar', $data);
@@ -40,7 +40,7 @@ class User extends CI_Controller {
                 $new_password = $this->input->post('new_password1');
                 if (md5($current_password) != $old_password){
                    $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">Silahkan ulangi password lama anda</div>');
-                    redirect('user/profile'); 
+                    redirect('user/profile');
                 }
                 elseif ($current_password == $new_password) {
                     $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">Password baru tidak bisa sama dengan yang lama</div>');
@@ -74,14 +74,14 @@ class User extends CI_Controller {
             $this->load->view('templates/topbar', $data);
             $this->load->view('user/daftarBarang', $data);
             $this->load->view('user/buatPermintaan', $data);
-            $this->load->view('templates/footer');  
+            $this->load->view('templates/footer');
         }
-        else 
+        else
         {
             $this->insert();
         }
     }
-  
+
     private function insert()
         {
             $id_jenis_barang   = $this->input->post('id_jenis_barang');
@@ -116,7 +116,7 @@ class User extends CI_Controller {
         $this->load->view('templates/topbar', $data);
         $this->load->view('user/pengajuanSaya', $data);
         $this->load->view('user/buatPermintaan', $data);
-        $this->load->view('templates/footer'); 
+        $this->load->view('templates/footer');
     }
 
         public function konfirmasiBarang($id){
@@ -133,12 +133,13 @@ class User extends CI_Controller {
         $this->form_validation->set_rules('nama_barang', 'Barang', 'trim|required');
         $this->form_validation->set_rules('jumlah_barang', 'Jumlah', 'trim|required|numeric');
         $this->form_validation->set_rules('satuan', 'Satuan', 'trim|required|alpha');
+        $this->form_validation->set_rules('alasan', 'alasan', 'trim');
         if($this->form_validation->run()==false){
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar', $data);
             $this->load->view('templates/topbar', $data);
             $this->load->view('user/konfirmasi', $data);
-            $this->load->view('templates/footer'); 
+            $this->load->view('templates/footer');
     } else {
          $data = array(
                 'id_jenis_barang' => $this->input->post('id_jenis_barang'),
@@ -147,19 +148,31 @@ class User extends CI_Controller {
                 'satuan' => $this->input->post('satuan'),
                 'id_status_submisi' => $this->input->post('id_status_submisi'),
                 'username' => $this->input->post('username'),
-                'id_status_terima' => $this->input->post('id_status_terima')
+                'id_status_terima' => $this->input->post('id_status_terima'),
+                'alasan' => $this->input->post('alasan')
             );
             $this->db->where('id', $id);
             $this->db->update('submisi_barang', $data);
             $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Data berhasil diubah </div>');
             redirect('user/pengajuan');
-       }    
+       }
+    }
+
+    public function alasan_control($id){
+        $data['title'] = 'Pengajuan Saya';
+        $data['record'] = $this->Barang_model->get_satu_barang($id)->row_array();
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('user/alasan_view', $data);
+        $this->load->view('login/logout_modal', $data);
+        $this->load->view('templates/footer');
     }
 
     public function deleteBarang($id){
        $this->Barang_model->delete_barang($id);
        $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Data terhapus </div>');
-       redirect('user/pengajuan'); 
+       redirect('user/pengajuan');
     }
 
 }

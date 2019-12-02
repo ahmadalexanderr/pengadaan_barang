@@ -23,7 +23,7 @@
     <option value="<?php echo $row['id_jenis_barang'];?>" <?php if($record['id_jenis_barang'] == $row['id_jenis_barang']) { echo 'selected';}?>><?php echo $row['nama_jenis_barang'];?></option>
     <?php endforeach;?>
     </select>
-  </div> 
+  </div>
     </div>
   <div class="form-group col-md">
     <label>Barang</label>
@@ -50,24 +50,40 @@ $(function(){
          }).done(function(data) {
             $('select[name=id_status_terima]').html(data);
          }).fail(function() {
-			
+
          }).always(function() {
-         
+
         });
 	});
 });
 </script>
  <div class="form-group col-md">
  <label>Status Submisi</label>
-    <?php $value = $record['id_status_submisi']; ?>
+    <!-- <?php $value = $record['nama_status_submisi'] ?> -->
     <?php echo form_dropdown('id_status_submisi', $dropdownItems, $value, 'class="form-control"');?>
-  </div> 
+  </div>
+  <div class="form-group col-md">
+  <?php
+  $data = array(
+        'name'        => 'alasan',
+        'id'          => 'alasan',
+        'value'       => set_value('alasan'),
+        'rows'        => '5',
+        'cols'        => '10',
+        'style'       => 'width:100%',
+        'class'       => 'form-control',
+        'placeholder' => 'laporan (opsional)'
+    );
+
+    echo form_textarea($data);
+  ?>
+  </div>
  <div class="form-group col-md" style=visibility:hidden>
  <label>Status Penerimaan Barang</label>
     <?php $value = $record['id_status_terima']; ?>
     <?php echo form_dropdown('id_status_terima', [], $value, 'class="form-control"'); ?>
   </div>
-  </div> 
+  </div>
   <div class="form-group col-md">
     <center>
     <button type="submit" id="edit" class="btn btn-primary" value="Insert">ACC</button>

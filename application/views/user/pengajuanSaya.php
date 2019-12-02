@@ -19,6 +19,7 @@
        <th scope="col">Status Penerimaan</th>
        <?php if ($this->session->userdata('level')!= 'subag') { ?>
       <th scope="col">Konfirmasi Penerimaan Barang</th>
+      <th scope="col">Laporan Pengajuan</th>
        <?php } ?>
     </tr>
   </thead>
@@ -52,6 +53,11 @@
   Terkonfirmasi
 </div></td>
       <?php } ?>
+      <?php if ($this->session->userdata('level') == 'admin' && $sb['nama_status_submisi'] != 'Pending') { ?>
+      <td><a href="<?php echo site_url('admin/alasan_control/'.$sb['id']);?>">Lihat Laporan</a>
+     <?php } elseif ($this->session->userdata('level') == 'user' && $sb['nama_status_submisi'] != 'Pending') { ?>
+      <td><a href="<?php echo site_url('user/alasan_control/'.$sb['id']);?>">Lihat Laporan</a>
+     <?php } ?>
     </tr>
 
     </tr>
