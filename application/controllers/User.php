@@ -120,7 +120,7 @@ class User extends CI_Controller {
     }
 
         public function konfirmasiBarang($id){
-        $data['title'] = "Daftar Barang";
+        $data['title'] = "Pengajuan Saya";
         $data['record'] = $this->Barang_model->get_satu_barang($id)->row_array();
         $data['submit_barang'] = $this->Barang_model->get_submit();
         $data['approved_jenis_barang'] = $this->Jenis_model->get_approved_jenis()->result_array();
@@ -169,11 +169,11 @@ class User extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
-    public function deleteBarang($id){
-       $this->Barang_model->delete_barang($id);
-       $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Data terhapus </div>');
-       redirect('user/pengajuan');
-    }
+    // public function deleteBarang($id){
+    //    $this->Barang_model->delete_barang($id);
+    //    $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Data terhapus </div>');
+    //    redirect('user/pengajuan');
+    // }
 
 }
 ?>

@@ -276,7 +276,9 @@ class Admin extends CI_Controller {
             );
             $this->db->where('id_jenis_barang', $id_jenis_barang);
             $this->db->update('jenis_barang', $data);
+            if ($this->input->post('izin_jenis_barang') == 'accepted'){ 
             $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Kategori berhasil ditampilkan </div>');
+            }
             redirect('admin/accJenis');
         }
     }

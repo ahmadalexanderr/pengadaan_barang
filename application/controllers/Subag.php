@@ -162,7 +162,9 @@ class Subag extends CI_Controller {
             );
             $this->db->where('id_jenis_barang', $id_jenis_barang);
             $this->db->update('jenis_barang', $data);
+            if ($this->input->post('izin_jenis_barang') == 'accepted'){ 
             $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Kategori berhasil ditampilkan </div>');
+            }
             redirect('subag/pengajuanKategori');
         }
     }
@@ -176,7 +178,7 @@ class Subag extends CI_Controller {
     }
 
      public function accBarang($id){
-        $data['title'] = "Edit Barang";
+        $data['title'] = "Daftar Barang";
         $data['record'] = $this->Barang_model->get_satu_barang($id)->row_array();
         $data['submit_barang'] = $this->Barang_model->get_submit();
         $data['approved_jenis_barang'] = $this->Jenis_model->get_approved_jenis()->result_array();
