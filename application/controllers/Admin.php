@@ -179,7 +179,9 @@ class Admin extends CI_Controller {
             );
             $this->db->where('id', $id);
             $this->db->update('submisi_barang', $data);
+            if ($this->input->post('id_status_terima') == 8) {
             $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Pengajuan terkonfirmasi </div>');
+            }
             redirect('admin/pengajuan');
        }
     }
@@ -191,6 +193,17 @@ class Admin extends CI_Controller {
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
         $this->load->view('user/alasan_view', $data);
+        $this->load->view('login/logout_modal', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function all_alasan($id){
+        $data['title'] = 'Daftar Barang';
+        $data['record'] = $this->Barang_model->get_satu_barang($id)->row_array();
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('user/all_alasan_view', $data);
         $this->load->view('login/logout_modal', $data);
         $this->load->view('templates/footer');
     }

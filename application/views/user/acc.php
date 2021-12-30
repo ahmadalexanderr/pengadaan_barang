@@ -18,7 +18,7 @@
   <div class="form-group col-md">
       <label>Jenis</label>
    <div class="form-group control">
-   <select readonly class="form-control" name="id_jenis_barang" id="id_jenis_barang" required>
+   <select readonly class="form-control" name="id_jenis_barang" id="id_jenis_barang" required disabled>
     <?php foreach($approved_jenis_barang as $row):?>
     <option value="<?php echo $row['id_jenis_barang'];?>" <?php if($record['id_jenis_barang'] == $row['id_jenis_barang']) { echo 'selected';}?>><?php echo $row['nama_jenis_barang'];?></option>
     <?php endforeach;?>
@@ -90,3 +90,39 @@ $(function(){
     </center>
    </div>
 </form>
+<script>
+jQuery(document).ready(function($) {
+    var $select = $('#id_jenis_barang'), 
+    name = $select.prop('name'), 
+    $form = $select.parent('form');
+
+	//store the name in the data attribute 
+    $select.data('original-name', name);  
+
+    $('#edit').on('click', function(event) {
+
+        if($select.prop('disabled')){
+            //enable the element
+            //remove the hidden fields if any
+            $form.find('input[type="hidden"][name='+name+']')
+            	 .remove(); 
+            //restore the name and enable 
+            $select.prop({name : name, 
+            				disabled : false}); 
+        } else {
+            //disable it 
+            var $hiddenInput = $('<input/>', 
+            					{   type  : 'hidden', 
+            						name  : name, 
+            						value : $select.val()
+            					});
+
+			//append the hidden field to the form
+            $form.append( $hiddenInput );  
+            //change name and disbale 
+            $select.prop({ name : name + "_1",
+            				 disabled : true });
+        }
+    });
+});
+</script>

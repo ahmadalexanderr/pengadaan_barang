@@ -31,6 +31,9 @@
       <th scope="col">Status Penerimaan</th>
       <!-- <th scope="col">Status Penerimaan</th> -->
       <th scope="col">ACC</th>
+      <?php if ($this->session->userdata('level') != 'user'){ ?>
+      <th scope="col">Laporan Pengajuan</th>
+      <?php } ?>
     </tr>
   </thead>
   <tbody>
@@ -63,6 +66,12 @@
       </div></td> 
      <?php } ?>
       </td>
+      <td><?php if ($this->session->userdata('level') == 'admin' && $sb['nama_status_submisi'] != 'Pending') { ?>
+      <a href="<?php echo site_url('admin/all_alasan/'.$sb['id']);?>">Lihat Laporan</a>
+     <?php } elseif ($this->session->userdata('level') == 'subag' && $sb['nama_status_submisi'] != 'Pending') {?> 
+    <a href="<?php echo site_url('subag/alasan_control/'.$sb['id']);?>">Lihat Laporan</a>
+     <?php } ?> 
+     </td>
     </tr>
     </tr>
     <?php $i++; ?>

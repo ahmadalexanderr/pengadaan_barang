@@ -174,7 +174,7 @@ class Subag extends CI_Controller {
         $izin_jenis_barang = $this->input->post('izin_jenis_barang');
         $this->Jenis_model->insert_jenis($nama_jenis_barang, $izin_jenis_barang);
         $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Kategori barang berhasil ditambahkan </div>');
-        redirect('subag/daftarKategori');
+        redirect('subag/pengajuanKategori');
     }
 
      public function accBarang($id){
@@ -219,6 +219,17 @@ class Subag extends CI_Controller {
        $this->Barang_model->delete_barang($id);
        $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Data terhapus </div>');
        redirect('subag/daftarBarang');
+    }
+
+    public function alasan_control($id){
+        $data['title'] = 'Daftar Barang';
+        $data['record'] = $this->Barang_model->get_satu_barang($id)->row_array();
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('user/alasan_view', $data);
+        $this->load->view('login/logout_modal', $data);
+        $this->load->view('templates/footer');
     }
 }
 ?>

@@ -153,7 +153,9 @@ class User extends CI_Controller {
             );
             $this->db->where('id', $id);
             $this->db->update('submisi_barang', $data);
-            $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Data berhasil diubah </div>');
+            if ($this->input->post('id_status_terima') == 8) {
+            $this->session->set_flashdata('message',  '<div class="alert alert-success" role="alert"> Pengajuan terkonfirmasi </div>');
+            }
             redirect('user/pengajuan');
        }
     }
